@@ -3,19 +3,119 @@
 </div>
 
 <script>
-    function loadVideo(title, desc, searchTerms, element) {
-        document.getElementById('lblTitle').innerText = title;
-        document.getElementById('lblDesc').innerText = desc;
+    // Complete structured database for both languages and accurate video strings
+    const dataset = {
+        en: {
+            sidebar: "SEO Training Modules",
+            lessons: [
+                {
+                    title: "Module 1: Keyword Research Frameworks",
+                    desc: "Master the fundamentals of finding high-value search terms, analyzing keyword intent, and calculating search volumes for client strategies.",
+                    card: "1. Keyword Research Guide",
+                    video: "HnVKWQL4Xy4"
+                },
+                {
+                    title: "Module 2: On-Page Optimization Architecture",
+                    desc: "Deep dive into content structures, proper tagging hierarchies, optimizing meta data, and formatting content for higher search rankings.",
+                    card: "2. On-Page Architecture",
+                    video: "d9eT7Z1K8p0"
+                },
+                {
+                    title: "Module 3: Technical Auditing & Crawl Analytics",
+                    desc: "How to run complete technical diagnostics, identify broken links, fix indexing errors, and review site speed performance dashboards.",
+                    card: "3. Technical Audits Masterclass",
+                    video: "8pZ_m_4G_k8"
+                }
+            ]
+        },
+        ur: {
+            sidebar: "ایس ای او ٹریننگ ماڈیولز",
+            lessons: [
+                {
+                    title: "ماڈیول 1: کی ورڈ ریسرچ کا طریقہ کار",
+                    desc: "اعلیٰ مالیت کے سرچ الفاظ تلاش کرنے، صارف کی نیت کا تجزیہ کرنے، اور کلائنٹ کی حکمت عملیوں کے لیے سرچ والیوم کا حساب لگانے کے بنیادی اصول سیکھیں۔",
+                    card: "1. کی ورڈ ریسرچ گائیڈ",
+                    video: "HnVKWQL4Xy4"
+                },
+                {
+                    title: "ماڈیول 2: آن پیج آپٹیمائزیشن آرکیٹیکچر",
+                    desc: "کنٹینٹ کی ساخت، مناسب ہیڈنگ ٹیگز، میٹا ڈیٹا کو بہتر بنانے، اور گوگل رینکنگ بڑھانے کے لیے مواد کو ترتیب دینے کا گہرا مطالعہ کریں۔",
+                    card: "2. آن پیج آرکیٹیکچر",
+                    video: "d9eT7Z1K8p0"
+                },
+                {
+                    title: "ماڈیول 3: ٹیکنیکل آڈٹ اور کرال اینالیٹکس",
+                    desc: "ویب سائٹ کا مکمل ٹیکنیکل معائنہ کرنے، ٹوٹے ہوئے لنکس تلاش کرنے، انڈیکسنگ کی خرابیاں ٹھیک کرنے، اور ویب سائٹ کی سپیڈ کو چیک کرنے کا طریقہ کار۔",
+                    card: "3. ٹیکنیکل آڈٹ ماسٹر کلاس",
+                    video: "8pZ_m_4G_k8"
+                }
+            ]
+        }
+    };
+
+    let currentLang = 'en';
+    let currentIndex = 0;
+
+    function renderUI() {
+        const data = dataset[currentLang];
+        const lesson = data.lessons[currentIndex];
         
-        const frame = document.getElementById('videoPlayer');
-        frame.src = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(searchTerms)}`;
+        // Update Sidebar Title Header
+        document.getElementById('sidebarHeader').innerText = data.sidebar;
         
+        // Update Active Video Text
+        document.getElementById('lblTitle').innerText = lesson.title;
+        document.getElementById('lblDesc').innerText = lesson.desc;
+        
+        // Update Playlist Card Labels
+        for(let i = 0; i < data.lessons.length; i++) {
+            const cardEl = document.getElementById(`cardTitle${i}`);
+            cardEl.innerText = data.lessons[i].card;
+            
+            // Adjust text alignments based on language selection
+            if(currentLang === 'ur') {
+                cardEl.parentElement.parentElement.classList.add('rtl');
+            } else {
+                cardEl.parentElement.parentElement.classList.remove('rtl');
+            }
+        }
+
+        // Apply visual alignment layout shifts to main description window
+        const detailsEl = document.getElementById('activeDetails');
+        if(currentLang === 'ur') {
+            detailsEl.classList.add('rtl');
+        } else {
+            detailsEl.classList.remove('rtl');
+        }
+    }
+
+    function selectCard(index, element) {
+        currentIndex = index;
+        
+        // Update the video engine source frame smoothly
+        const videoId = dataset[currentLang].lessons[currentIndex].video;
+        document.getElementById('videoPlayer').src = `https://www.youtube.com/embed/${videoId}`;
+        
+        // Sync active selection styles highlights
         const cards = document.getElementsByClassName('module-card');
         for(let i=0; i<cards.length; i++) {
             cards[i].classList.remove('active');
         }
         element.classList.add('active');
+        
+        renderUI();
+    }
+
+    function switchLanguage(lang) {
+        currentLang = lang;
+        
+        // Update navigation active states
+        document.getElementById('btnEn').classList.remove('active');
+        document.getElementById('btnUr').classList.remove('active');
+        
+        document.getElementById(lang === 'en' ? 'btnEn' : 'btnUr').classList.add('active');
+        
+        renderUI();
     }
 </script>
-</body>
-</html>
+
