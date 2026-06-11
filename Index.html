@@ -1,0 +1,21 @@
+        </div>
+    </div>
+</div>
+
+<script>
+    function loadVideo(title, desc, searchTerms, element) {
+        document.getElementById('lblTitle').innerText = title;
+        document.getElementById('lblDesc').innerText = desc;
+        
+        const frame = document.getElementById('videoPlayer');
+        frame.src = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(searchTerms)}`;
+        
+        const cards = document.getElementsByClassName('module-card');
+        for(let i=0; i<cards.length; i++) {
+            cards[i].classList.remove('active');
+        }
+        element.classList.add('active');
+    }
+</script>
+</body>
+</html>
