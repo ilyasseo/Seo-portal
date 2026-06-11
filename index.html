@@ -1,9 +1,88 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Mastery Academy</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: sans-serif; background: #090d16; color: #f1f5f9; padding-bottom: 30px; }
+        nav { background: #111827; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #d4af37; }
+        .logo { font-size: 18px; font-weight: bold; color: #d4af37; }
+        .logo span { color: #090d16; background: #d4af37; padding: 2px 6px; border-radius: 4px; font-size: 12px; margin-left: 5px; }
+        .lang-control { display: flex; gap: 5px; }
+        .lang-btn { background: #1f2937; border: 1px solid #374151; color: #9ca3af; padding: 6px 12px; font-size: 12px; font-weight: bold; border-radius: 4px; cursor: pointer; }
+        .lang-btn.active { background: #d4af37; color: #090d16; border-color: #d4af37; }
+        .container { max-width: 1200px; margin: 15px auto; padding: 0 10px; display: grid; grid-template-columns: 1fr; gap: 15px; }
+        @media (min-width: 900px) { .container { grid-template-columns: 2.6fr 1.4fr; } }
+        .video-wrapper { background: #111827; border-radius: 8px; padding: 10px; border: 1px solid #1f2937; }
+        .video-frame { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 6px; background: #000; }
+        .video-frame iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .video-details { margin-top: 12px; padding: 5px; }
+        .video-title { font-size: 18px; font-weight: bold; color: white; margin-bottom: 8px; }
+        .video-desc { font-size: 13px; color: #9ca3af; line-height: 1.5; }
+        .course-sidebar { background: #111827; border-radius: 8px; padding: 12px; border: 1px solid #1f2937; }
+        .sidebar-header { font-size: 12px; font-weight: bold; color: #6b7280; text-transform: uppercase; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #1f2937; }
+        .module-card { display: flex; gap: 10px; padding: 10px; border-radius: 6px; cursor: pointer; margin-bottom: 8px; background: #090d16; border: 1px solid transparent; }
+        .module-card:hover { border-color: #d4af37; }
+        .module-card.active { background: rgba(212, 175, 55, 0.1); border-color: #d4af37; }
+        .thumb-box { width: 65px; height: 38px; background: #1f2937; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: #d4af37; flex-shrink: 0; position: relative; }
+        .module-card.active .thumb-box { background: #d4af37; color: #090d16; }
+        .runtime { position: absolute; bottom: 2px; right: 2px; background: rgba(0,0,0,0.8); font-size: 8px; padding: 1px 2px; border-radius: 2px; color: white; }
+        .module-info { display: flex; flex-direction: column; justify-content: center; }
+        .module-name { font-size: 13px; font-weight: 600; color: #f3f4f6; }
+        .rtl { direction: rtl; text-align: right; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">SEO <span>ACADEMY</span></div>
+    <div class="lang-control">
+        <button class="lang-btn active" id="btnEn" onclick="switchLanguage('en')">English</button>
+        <button class="lang-btn" id="btnUr" onclick="switchLanguage('ur')">اردو</button>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="video-wrapper">
+        <div class="video-frame">
+            <iframe id="videoPlayer" src="https://www.youtube.com/embed/HnVKWQL4Xy4" allowfullscreen></iframe>
+        </div>
+        <div class="video-details" id="activeDetails">
+            <h2 class="video-title" id="lblTitle">Module 1: Keyword Research Frameworks</h2>
+            <p class="video-desc" id="lblDesc">Master the fundamentals of finding high-value search terms, analyzing keyword intent, and calculating search volumes for client strategies.</p>
+        </div>
+    </div>
+
+    <div class="course-sidebar">
+        <h3 class="sidebar-header" id="sidebarHeader">SEO Training Modules</h3>
+        
+        <div class="module-card active" onclick="selectCard(0, this)">
+            <div class="thumb-box">SEO 01 <span class="runtime">14:20</span></div>
+            <div class="module-info">
+                <span class="module-name" id="cardTitle0">1. Keyword Research Guide</span>
+            </div>
+        </div>
+
+        <div class="module-card" onclick="selectCard(1, this)">
+            <div class="thumb-box">SEO 02 <span class="runtime">19:45</span></div>
+            <div class="module-info">
+                <span class="module-name" id="cardTitle1">2. On-Page Architecture</span>
+            </div>
+        </div>
+
+        <div class="module-card" onclick="selectCard(2, this)">
+            <div class="thumb-box">SEO 03 <span class="runtime">26:10</span></div>
+            <div class="module-info">
+                <span class="module-name" id="cardTitle2">3. Technical Audits Masterclass</span>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-    // Complete structured database for both languages and accurate video strings
     const dataset = {
         en: {
             sidebar: "SEO Training Modules",
@@ -60,19 +139,14 @@
         const data = dataset[currentLang];
         const lesson = data.lessons[currentIndex];
         
-        // Update Sidebar Title Header
         document.getElementById('sidebarHeader').innerText = data.sidebar;
-        
-        // Update Active Video Text
         document.getElementById('lblTitle').innerText = lesson.title;
         document.getElementById('lblDesc').innerText = lesson.desc;
         
-        // Update Playlist Card Labels
         for(let i = 0; i < data.lessons.length; i++) {
-            const cardEl = document.getElementById(`cardTitle${i}`);
+            const cardEl = document.getElementById('cardTitle' + i);
             cardEl.innerText = data.lessons[i].card;
             
-            // Adjust text alignments based on language selection
             if(currentLang === 'ur') {
                 cardEl.parentElement.parentElement.classList.add('rtl');
             } else {
@@ -80,7 +154,6 @@
             }
         }
 
-        // Apply visual alignment layout shifts to main description window
         const detailsEl = document.getElementById('activeDetails');
         if(currentLang === 'ur') {
             detailsEl.classList.add('rtl');
@@ -91,31 +164,29 @@
 
     function selectCard(index, element) {
         currentIndex = index;
-        
-        // Update the video engine source frame smoothly
         const videoId = dataset[currentLang].lessons[currentIndex].video;
-        document.getElementById('videoPlayer').src = `https://www.youtube.com/embed/${videoId}`;
+        document.getElementById('videoPlayer').src = "https://www.youtube.com/embed/" + videoId;
         
-        // Sync active selection styles highlights
         const cards = document.getElementsByClassName('module-card');
         for(let i=0; i<cards.length; i++) {
             cards[i].classList.remove('active');
         }
         element.classList.add('active');
-        
         renderUI();
     }
 
     function switchLanguage(lang) {
         currentLang = lang;
-        
-        // Update navigation active states
         document.getElementById('btnEn').classList.remove('active');
         document.getElementById('btnUr').classList.remove('active');
         
-        document.getElementById(lang === 'en' ? 'btnEn' : 'btnUr').classList.add('active');
-        
+        if(lang === 'en') {
+            document.getElementById('btnEn').classList.add('active');
+        } else {
+            document.getElementById('btnUr').classList.add('active');
+        }
         renderUI();
     }
 </script>
-
+</body>
+</html>
